@@ -43,3 +43,10 @@ Loaded Configuration File => /etc/php.ini
 ```
 
 These steps should more or less also work on other *IX systems.
+
+
+# Start a local Web Server
+
+```
+/usr/bin/php -S "localhost:9090"
+```
