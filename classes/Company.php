@@ -14,7 +14,9 @@ class Company implements iDao {
     public $address;
     public $users = array();
     
-    
+
+
+
     /**
      * The default constructor
      */
@@ -53,30 +55,69 @@ class Company implements iDao {
      */
     public function addUser($user)
     {
-        $this->users[$user.uid] = $user;
-    }
-
-
-
-
-    public function get() {
+        array_push($this->users, $user);
         
-        return TRUE;
+        return $this;
     }
 
+    /**
+     * Get the company object
+     */
+    public function get() {
+       
+        $bucket = ConnManager::getBucketCon();
+        
+        $key = self::TYPE . "::" . $this->id;
+                
+        //The type is a standard class object
+        $doc = $bucket->get($key)->value;
+        $this->id = $doc->id;
+        $this->name = $doc->name;
+        $this->address = $doc->address;
+        
+        if (isset($doc->users))
+        {
+            foreach ($doc->users as $uid)
+            {
+                //Get also the associated users
+                $user = (new User($uid))->get();
+                
+                array_push($this->users, $user);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Persist the company object
+     */
     public function persist() {
         
         $bucket = ConnManager::getBucketCon();  
   
-        //Use an associative array to store as JSON
-        $doc = array();
+        //Use an associative array or a standard object to store as JSON
+        //Even the $this could be stored directly
+        $doc = new stdClass();
+       
+        $doc->type = self::TYPE;
+        $doc->id = $this->id;
+        $doc->name = $this->name;
+        $doc->address = $this->address;
         
-
-        $doc["type"] = self::TYPE;
-        $doc["id"] = $this->id;
-        $doc["name"] = $this->name;
-        $doc["address"] = $this->address;
+        if (!empty($this->users))
+        {
+                $doc->users = array();
+        }
               
+        foreach ($this->users as $u)
+        {
+            array_push($doc->users, $u->uid);
+          
+            //Persist also associated users
+            $u->persist();
+        }
+        
         $bucket->upsert(self::TYPE . "::" . $this->id, $doc);
     }
 

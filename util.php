@@ -7,5 +7,5 @@ function echoln($txt)
 
 function echoerr($txt)
 {
-    echo nl2br("ERR:" . $txt);
+    echo nl2br("ERR:" . $txt . "<br/>");
 }

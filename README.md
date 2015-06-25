@@ -42,7 +42,18 @@ extension=couchbase.so
 Loaded Configuration File => /etc/php.ini
 ```
 
-These steps should more or less also work on other *IX systems.
+These steps should more or less also work on other *IX systems. Please follow our documentation for the installation on Windows (http://docs.couchbase.com/developer/php-2.0/download-links.html)!
+
+
+# Couchbase Connection Settings
+
+There is a PHP file 'settings.php' which contains the connection details to the Couchbase Cluster
+
+```
+define(CB_HOST, "couchbase://192.168.7.155,192.168.7.160");
+define(CB_BUCKET, "workshop");
+define(CB_BUCKET_PWD, "test");
+```
 
 
 # Start a local Web Server
@@ -50,3 +61,5 @@ These steps should more or less also work on other *IX systems.
 ```
 /usr/bin/php -S "localhost:9090"
 ```
+
+I used Netbeans 8.x for developing this, which allows you to run the application within the PHP built-in Web Server.

@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <meta charset="UTF-8">
@@ -22,29 +17,31 @@ and open the template in the editor.
             
             
      
-            echoln("-- Starting Couchbase Demo");
+            echoln("<h1> Couchbase PHP Workshop </h1>");
            
             try {
                 
                 demoAddUser();
                 demoAddCompany();
-              
+                demoAddUserToCompany();
+                demoGetUserAndCompany();
     
             } catch (Exception $exc) {
                 
                 //Global error handling, exceptions could be indeed catched locally
+                echoerr($exc->getMessage());
                 echoerr($exc->getTraceAsString());
             }
          
             /**
-             * Add a user 
+             * 1.) Add an user 
              */
             function demoAddUser()
             {
-                echoln("- demoAddUser");
+                echoln("<h3>demoAddUser</h3>");
                 
-                $user_dmaier = new User("dmaier", "David", "Maier", "david.maier@couchbase.com", new DateTime("1980-01-01"));
-                $user_mmustermann = new User("mmustermann", "Max", "Mustermann", "max.mustermann@mm.de", new DateTime("2000-07-01"));
+                $user_dmaier = new User("dmaier", "David", "Maier", "david.maier@couchbase.com", new DateTime());
+                $user_mmustermann = new User("mmustermann", "Max", "Mustermann", "max.mustermann@mm.de", new DateTime());
                 
                 echoln("Persisting " . $user_dmaier->uid . "...");
                 $user_dmaier->persist();
@@ -53,10 +50,12 @@ and open the template in the editor.
                 
             }
             
-            
+            /**
+             * 2.) Add a company
+             */
             function demoAddCompany()
             {
-                echoln("- demoAddCompany");
+                echoln("<h3>demoAddCompany</h3>");
                 
                 $company_couchbase = new Company("couchbase.com","Couchbase Corp.", "Mountain View");
                 
@@ -64,24 +63,40 @@ and open the template in the editor.
                 $company_couchbase->persist();
             }
             
+            /**
+             * 3.) Add a user to the company
+             */
+            function demoAddUserToCompany()
+            {
+                echoln("<h3>demoAddUserToCompany</h3>");
+                echoln("Adding user to company ...");
+                
+                $dmaier = (new User("dmaier"))->get();
+                $mmustermann = (new User("mmustermann"))->get();
+              
+                $company = (new Company("couchbase.com"))->get();
+                $company->addUser($dmaier)->addUser($mmustermann)->persist();
+            }
+            
             
             /**
-             * Get the user and the company
+             * 4.) Get the user and the company
              */
             function demoGetUserAndCompany() {
-
-                echoln("Initiating a user and a company ...<br/>");
+                
+                echoln("<h3>demoGetUserAndCompany</h3>");
+                echoln("Getting companies and users ..."); 
+                
                 $user = new User("dmaier");
-
-                //DEBUG
-                //var_dump($user);
-
-                echoln("user = " . $user->uid . "<br/>");
-                $company = new Company("couchbase");
-                echoln("company = " . $company->id . "<br/>");
-
-                //DEBUG
-                //var_dump($company);
+                $user->get();
+                echoln("user = " . $user->first_name . " " . $user->last_name);
+                
+                $company = new Company("couchbase.com");
+                $company->get();
+                echoln("company = " . $company->name);
+                echoln("employee #1 = " . $company->users[0]->last_name);
+                echoln("employee #2 = " . $company->users[1]->last_name);
+ 
             }
         ?>
     </body>

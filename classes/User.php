@@ -65,22 +65,35 @@ class User implements iDao {
     
     public function get() {
         
-        return TRUE;
+        $bucket = ConnManager::getBucketCon();
+        
+        $key = self::TYPE . "::" . $this->uid;
+        
+        //The type is a standard class object
+        $doc = $bucket->get($key)->value;
+        $this->uid = $doc->uid;
+        $this->first_name = $doc->first_name;
+        $this->last_name = $doc->last_name;
+        $this->mail = $doc->mail;
+        $this->birth_day = DateTime::createFromFormat('U', $doc->bday);
+        
+        return $this;
     }
 
     public function persist() {
         
         $bucket = ConnManager::getBucketCon();  
   
-        //Use an associative array to store as JSON
-        $doc = array();
+        //Use an associative array or a standard object to store as JSON
+        //Even the $this could be stored directly
+        $doc = new stdClass();
         
-        $doc["type"] = self::TYPE;
-        $doc["uid"] = $this->uid;
-        $doc["first_name"] = $this->first_name;
-        $doc["last_name"] = $this->last_name;
-        $doc["mail"] = $this->mail;
-        $doc["bday"] = $this->birth_day->getTimestamp();
+        $doc->type = self::TYPE;
+        $doc->uid = $this->uid;
+        $doc->first_name = $this->first_name;
+        $doc->last_name = $this->last_name;
+        $doc->mail = $this->mail;
+        $doc->bday = $this->birth_day->format('U');
               
         $bucket->upsert(self::TYPE . "::" . $this->uid, $doc);
         
