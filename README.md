@@ -5,7 +5,15 @@ Source code for the Couchbase PHP workshop
 
 ## Day 1
 
-* 
+* Introduction and Use Cases
+* Couchbase Server Technical Architecture
+* Couchbase Server as a Distributed System
+* Installation and Configuration
+* Testing the Installation
+* Working with Buckets
+* Working with the Cluster
+* Backup and Restore
+* XDCR explained
 
 
 ## Day 2 - Using the Couchbase PHP SDK 2.x
