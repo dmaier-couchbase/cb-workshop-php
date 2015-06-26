@@ -1,8 +1,32 @@
 # Couchbase PHP workshop
 Source code for the Couchbase PHP workshop
 
+# Workshop Agenda
+
+## Day 1
+
+* 
+
+
+## Day 2 - Using the Couchbase PHP SDK 2.x
+
+* Document Modeling Basics
+* Managing Connections
+* Creating Documents
+* Updating Documents
+* Deleting Documents
+* Querying via Views
+* Error Handling and Logging
+* Sample Application (Idea, Requirements, ...)
+* Outlook
+
 # Preparations on MacOS
 
+* Prepare 3 VM-s with CentOS 6.x as your Couchbase Server node hosts
+** 1.5 GB RAM
+** 10 GB HDD
+** Static IP-s
+** Can reach each other
 
 * Install/update libcouchbase
 ```

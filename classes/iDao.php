@@ -9,13 +9,19 @@
 interface iDao {
     
     /**
-     * Get an user
+     * Get an object
      */
     public function get();
     
     /**
-     * Persist an user
+     * Persist an object
      */
     public function persist();
+    
+    
+    /**
+     * Delete an object
+     */
+    public function delete();
     
 }

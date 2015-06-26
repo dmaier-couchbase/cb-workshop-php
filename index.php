@@ -18,7 +18,9 @@
                 demoAddCompany();
                 demoAddUserToCompany();
                 demoGetUserAndCompany();
+                demoDeleteUsers();
                 demoQueryUsers();
+                
     
             } catch (Exception $exc) {
                 
@@ -94,7 +96,37 @@
             }
             
             /**
-             *  5.) Query users
+             * 5.) Delete users
+             */
+            function demoDeleteUsers()
+            {
+                echoln("<h3>demoDeleteUsers</h3>");
+                echoln("Adding a company and some users ...");
+                
+                $comp = new Company("nosqlgeek.org", "Blog - nosqlgeek.org", "http://www.nosqlgeek.org");
+                $comp->persist();
+    
+                for ($i = 0; $i < 5; $i++) {
+                
+                    $comp->addUser(new User("user" . $i , "First" . $i, "Last" . $i, "mail" . $i . "@nosqlgeek.org", new DateTime()));
+                }
+                
+                $comp->persist();
+                
+                echoln("Deleting the users ...");
+               
+                foreach ($comp->users as $u)
+                {
+                    $u->delete();
+                }
+                
+                echoln("Deleting the company ...");
+                $comp->delete();
+            }
+            
+            
+            /**
+             *  6.) Query users
              */
             function demoQueryUsers() {
                 

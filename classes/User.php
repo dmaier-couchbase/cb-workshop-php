@@ -98,6 +98,14 @@ class User implements iDao {
         $bucket->upsert(self::TYPE . "::" . $this->uid, $doc);
         
     }
+    
+    public function delete() {
+        
+        $bucket = ConnManager::getBucketCon();  
+        
+        return $bucket->remove(self::TYPE . "::" . $this->uid);
+        
+    }
 
     /**
      * Assumes that you have a View for the last name
@@ -108,10 +116,9 @@ class User implements iDao {
      *   {
      *       if ( typeof doc.last_name != undefined)
      *       {
-     *           emit(doc.last_name, null);  
+     *           emit(doc.last_name, doc.uid);  
      *       }
      *   }
-     * }   
      * 
      * 
      * @param type $prop
@@ -141,5 +148,4 @@ class User implements iDao {
         return $result;
 
     }
-
 }

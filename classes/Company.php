@@ -121,4 +121,11 @@ class Company implements iDao {
         $bucket->upsert(self::TYPE . "::" . $this->id, $doc);
     }
 
+    public function delete() {
+     
+        $bucket = ConnManager::getBucketCon();  
+        
+        return $bucket->remove(self::TYPE . "::" . $this->id);
+    }
+
 }
