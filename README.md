@@ -3,7 +3,7 @@ Source code for the Couchbase PHP workshop
 
 # Workshop Agenda
 
-## Day 1
+## Day 1 - Couchbase Architecture and Administration Basics
 
 * Introduction and Use Cases
 * Couchbase Server Technical Architecture
