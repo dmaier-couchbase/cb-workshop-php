@@ -8,7 +8,14 @@
  */
 interface iDao {
     
+    /**
+     * Get an user
+     */
     public function get();
     
+    /**
+     * Persist an user
+     */
     public function persist();
+    
 }

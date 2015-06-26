@@ -7,15 +7,8 @@
     <body>
         <?php
            
-            //Imports
-            include_once 'classes/iDao.php';
-            include_once 'classes/User.php';
-            include_once 'classes/Company.php';
-            include_once 'classes/ConnManager.php';
-            include_once 'settings.php';
-            include_once 'util.php';
-            
-            
+            include_once 'imports.php';
+                     
      
             echoln("<h1> Couchbase PHP Workshop </h1>");
            
@@ -25,6 +18,7 @@
                 demoAddCompany();
                 demoAddUserToCompany();
                 demoGetUserAndCompany();
+                demoQueryUsers();
     
             } catch (Exception $exc) {
                 
@@ -98,6 +92,23 @@
                 echoln("employee #2 = " . $company->users[1]->last_name);
  
             }
+            
+            /**
+             *  5.) Query users
+             */
+            function demoQueryUsers() {
+                
+                echoln("<h3>demoQueryUsers</h3>");
+                echoln("Querying users by name ...");
+                
+                $users = User::queryByLastName("A", "Z");
+                
+                foreach($users as $u)
+                {
+                    echoln($u->first_name . " " . $u->last_name);
+                }
+            }
+            
         ?>
     </body>
 </html>

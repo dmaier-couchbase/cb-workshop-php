@@ -98,5 +98,48 @@ class User implements iDao {
         $bucket->upsert(self::TYPE . "::" . $this->uid, $doc);
         
     }
+
+    /**
+     * Assumes that you have a View for the last name
+     * 
+     * function (doc, meta) {
+     *
+     *   if (doc.type == "user")
+     *   {
+     *       if ( typeof doc.last_name != undefined)
+     *       {
+     *           emit(doc.last_name, null);  
+     *       }
+     *   }
+     * }   
+     * 
+     * 
+     * @param type $prop
+     * @param type $start_value
+     * @param type $end_value
+     */
+    public static function queryByLastName($start_value, $end_value) {
         
+        $bucket = ConnManager::getBucketCon();
+        
+        $query = CouchbaseViewQuery::from(CB_DESIGN_DOC, CB_VIEW)
+                ->stale(CouchbaseViewQuery::UPDATE_BEFORE)
+                ->range($start_value, $end_value);
+        
+        $queryResult = $bucket->query($query);
+        
+        $result = array();
+        
+        foreach ($queryResult["rows"] as $row)
+        {
+            array_push($result, (new User($row["value"]))->get());
+        }
+        
+        //DEBUG
+        //var_dump($result);
+        
+        return $result;
+
+    }
+
 }
