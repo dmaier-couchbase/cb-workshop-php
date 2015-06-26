@@ -77,7 +77,7 @@ Loaded Configuration File => /etc/php.ini
 These steps should more or less also work on other *IX systems. Please follow our documentation for the installation on Windows (http://docs.couchbase.com/developer/php-2.0/download-links.html)!
 
 
-# Get started
+# Getting started
 
 There is a PHP file 'settings.php' which contains the connection details to the Couchbase Cluster
 
